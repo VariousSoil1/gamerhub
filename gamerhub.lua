@@ -895,5 +895,19 @@ elseif game.PlaceId == 112420803 then
             end
         end
     })
+    local players = {}
+    for i,v in pairs(game.Players:GetPlayers()) do
+        table.insert(players, v.Name)
+    end
+    game.Players.PlayerAdded:Connect(function(plr)
+        table.insert(players, plr.Name)
+    end)
+    adsec:AddDropdown({
+        Name = "Padban",
+        Options = players,
+        Callback = function(v)
+            print(v)
+        end
+    })
     OrionLib:Init()
 end
