@@ -895,22 +895,55 @@ elseif game.PlaceId == 112420803 then
             end
         end
     })
-    local players = {}
-    for i,v in pairs(game.Players:GetPlayers()) do
-        table.insert(players, v.Name)
-    end
-    game.Players.PlayerAdded:Connect(function(plr)
-        table.insert(players, plr.Name)
-    end)
-    game.Players.PlayerRemoving:Connect(function(plr)
-        local index = table.find(players, plr.Name)
-        table.remove(players, index)
-    end)
-    adsec:AddDropdown({
-        Name = "Padban",
-        Options = players,
-        Callback = function(v)
-            print(v)
+    local padbannedplayers = {}
+    adsec:AddTextbox({
+        Name = "Old Padban (PUT FULL NAME, NOT PART OF NAME)",
+        Default = "",
+        TextDisappear = false,
+        Callback = function(p)
+            if game.Players:FindFirstChild(v) then
+                table.insert(padbannedplayers, p)
+                game.RunService.RenderStepped:Connect(function()
+                    for i,v in pairs(padbannedplayers) do
+                        for i2,v2 in pairs(workspace.Terrain._Game.Admin.Pads:GetChildren()) do
+                            if v2.Name == v then
+                                fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector)
+                                task.wait(0.5)
+                                game.Players:Chat("respawn "..v)
+                            end
+                        end
+                    end
+                end)
+            else
+                local getIndex = table.find(padbannedplayers, p)
+                OrionLib:MakeNotification({
+                    Name = "Player",
+                    Content = "Player doesn't exist. Player most likely left or you made a typo. ",
+                    Time = 5
+                })
+            end
+        end
+    })
+    adsec:AddTextbox({
+        Name = "Old Un-Padban (PUT FULL NAME, NOT PART OF NAME)",
+        Default = "",
+        TextDisappear = false,
+        Callback = function(p)
+            if game.Players:FindFirstChild(v) then
+                local ispadbanned = false
+                for i,v in pairs(padbannedplayers) do
+                    if p == v then
+                        ispadbanned = true
+                        break
+                    else
+                        ispadbanned = false
+                    end
+                end
+                if ispadbanned then
+                    local getIndex = table.find(padbannedplayers, p)
+                    table.remove(padbannedplayers, getIndex)
+                end
+            end
         end
     })
     OrionLib:Init()
