@@ -902,6 +902,10 @@ elseif game.PlaceId == 112420803 then
     game.Players.PlayerAdded:Connect(function(plr)
         table.insert(players, plr.Name)
     end)
+    game.Players.PlayerRemoving:Connect(function(plr)
+        local index = table.find(players, plr.Name)
+        table.remove(players, index)
+    end)
     adsec:AddDropdown({
         Name = "Padban",
         Options = players,
