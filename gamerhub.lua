@@ -782,7 +782,7 @@ elseif game.PlaceId == 112420803 then
                 end
             end
             if #check == 0 then
-                fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector, math.huge)
+                fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector)
             end
         end
     })
@@ -819,7 +819,7 @@ elseif game.PlaceId == 112420803 then
                     end
                 elseif not hasadmin and #check == 0 then
                     -- all pads taken
-                    firetouchinterest(workspace.Terrain._Game.Admin.Regen.ClickDetector, math.huge)
+                    fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector)
                 end
             end
         end
@@ -895,11 +895,60 @@ elseif game.PlaceId == 112420803 then
             end
         end
     })
-    OrionLib:Init()
+    local plrsthatarepadbanned = {}
     adsec:AddDropdown({
         Name = "Padban",
         Options = game.Players:GetPlayers(),
         Callback = function(v)
+            table.insert(plrsthatarepadbanned, v)
+            OrionLib:MakeNotification({
+                Name = "Padbanned",
+                Content = "Successfully added player to list of padbanned people. ",
+                Time = 5,
+            })
         end
     })
+    adsec:AddDropdown({
+        Name = "Un-Padban",
+        Options = game.Players:GetPlayers(),
+        Callback = function(v)
+            local isPadbanned = false -- just check
+            for i,v1 in pairs(plrsthatarepadbanned) do
+                if v.Name == v1 then
+                    table.remove(plrsthatarepadbanned, i)
+                    isPadbanned = true
+                    break
+                else
+                    isPadbanned = false
+                end
+            end
+            if not isPadbanned then
+                OrionLib:MakeNotification({
+                    Name = "Not padbanned",
+                    Content = "Specified player is not padbanned. ",
+                    Time = 5,
+                })
+            end
+        end
+    })
+    adsec:AddDropdown({
+        Name = "Enable Padbans",
+        Default = false,
+        Save = true,
+        Callback = function(v)
+            getgenv().enablepadban = v
+            game.RunService.RenderStepped:Connect(function()
+                for i,v in pairs(plrsthatarepadbanned) do
+                    for i2,v2 in pairs(workspace.Terrain._Game.Admin.Pads:GetChildren()) do
+                        if v2:FindFirstChild(tostring(v).."'s admin") and getgenv().enablepadban then
+                            game.Players:Chat("respawn "..tostring(v))
+                            task.wait(0.5)
+                            fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector)
+                        end
+                    end
+                end
+            end)
+        end
+    })
+    OrionLib:Init()
 end
