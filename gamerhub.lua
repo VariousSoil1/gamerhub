@@ -898,7 +898,7 @@ elseif game.PlaceId == 112420803 then
     local plrsthatarepadbanned = {}
     adsec:AddDropdown({
         Name = "Padban",
-        Options = game.Players:GetPlayers(),
+        Options = {game.Players:GetPlayers()},
         Callback = function(v)
             table.insert(plrsthatarepadbanned, v)
             OrionLib:MakeNotification({
@@ -910,7 +910,7 @@ elseif game.PlaceId == 112420803 then
     })
     adsec:AddDropdown({
         Name = "Un-Padban",
-        Options = game.Players:GetPlayers(),
+        Options = {game.Players:GetPlayers()},
         Callback = function(v)
             local isPadbanned = false -- just check
             for i,v1 in pairs(plrsthatarepadbanned) do
