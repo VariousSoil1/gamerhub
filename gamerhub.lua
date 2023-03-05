@@ -896,4 +896,156 @@ elseif game.PlaceId == 112420803 then
         end
     })
     OrionLib:Init()
+elseif game.PlaceId == 142823291 then
+    Window = OrionLib:MakeWindow({
+        Name = "GamerHub Private: Murder Mystery 2",
+        HidePremium = false,
+        SaveConfig = true,
+        ConfigFolder = "gamerhubmm2",
+    })
+    local LocalPlayer = Window:MakeTab({
+        Name = "LocalPlayer",
+        PremiumOnly = false,
+    })
+    local Teams = Window:MakeTab({
+        Name = "Teams",
+        PremiumOnly = false,
+    })
+    local lpsec = LocalPlayer:AddSection({
+        Name = "LocalPlayer",
+    })
+    local teamsec = Teams:AddSection({
+        Name = "Teams",
+    })
+    lpsec:AddSlider({
+        Name = "Walkspeed",
+        Min = 16,
+        Max = 250,
+        Default = 16,
+        Increment = 1,
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+        end
+    })
+    lpsec:AddSlider({
+        Name = "Jump Power",
+        Min = 50,
+        Max = 450,
+        Default = 50,
+        Increment = 1,
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+        end
+    })
+    lpsec:AddToggle({
+        Name = "ESP",
+        Default = false,
+        Save = true,
+        Callback = function(v)
+            getgenv().esp = v
+            function getTeam(plr)
+                if plr.Backpack:FindFirstChild("Knife") then
+                    return "murderer"
+                elseif plr.Backpack:FindFirstChild("Gun") then
+                    return "sheriff"
+                end
+            end
+            game.RunService.RenderStepped:Connect(function()
+                for i,v in pairs(game.Players:GetPlayers()) do
+                    if getgenv().esp then
+                        if getTeam(v) == "murderer" then
+                            local esp = Instance.new("Highlight", v.Character)
+                            esp.FillColor = Color3.new(255, 0, 0)
+                            esp.FillTransparency = 0
+                            esp.OutlineColor = Color3.new(0, 0, 0)
+                            esp.OutlineTransparency = 0
+                        elseif getTeam(v) == "sheriff" then
+                            local esp = Instance.new("Highlight", v.Character)
+                            esp.FillColor = Color3.new(0, 0, 255)
+                            esp.FillTransparency = 0
+                            esp.OutlineColor = Color3.new(0, 0, 0)
+                            esp.OutlineTransparency = 0
+                        elseif workspace:FindFirstChild("GrabGun") then
+                            local esp = Instance.new("Highlight", workspace["GrabGun"])
+                            esp.FillColor = Color3.new(0, 255, 0)
+                            esp.FillTransparency = 0
+                            esp.OutlineColor = Color3.new(0, 0, 0)
+                            esp.OutlineTransparency = 0
+                        end
+                    end
+                end
+            end)
+        end
+    })
+    teamsec:AddButton({
+        Name = "Kill all (murderer)",
+        Callback = function()
+            local check = false
+            -- check if murd or not
+            if game.Players.LocalPlayer.Backpack:FindFirstChild("Knife") then
+                -- has knife
+                check = true
+            elseif game.Players.LocalPlayer.Character:FindFirstChild("Knife") then
+                check = true
+            else
+                check = false
+                OrionLib:MakeNotification({
+                    OrionLib:MakeNotification({
+                        Name = "Wrong Team",
+                        Content = "You're on the wrong team. ",
+                        Time = 5,
+                    })
+                })
+            end
+            for i,v in pairs(game.Players:GetPlayers()) do
+                if v ~= game.Players.LocalPlayer then
+                    repeat
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+                        mouseclick()
+                    until v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("Humanoid")
+                end
+            end
+        end
+    })
+    teamsec:AddToggle({
+        Name = "Silent Aim",
+        Default = false,
+        Save = true,
+        Callback = function(v)
+            getgenv().silentaim = v
+            local function closest()
+                local distance = math.huge
+                local target = nil
+
+                for i,v in pairs(game.Players:GetPlayers()) do
+                    if v ~= game.Players.LocalPlayer and v.Character and getgenv().silentaim and v.TeamColor ~= game.Players.LocalPlayer.TeamColor then
+                        local sp = workspace.CurrentCamera:WorldToScreenPoint(v.Character.Head.Position)
+                    end 
+                end
+
+                return target
+            end
+        end
+    })
+elseif game.PlaceId == 6284583030 then
+    Window = OrionLib:MakeWindow({
+        Name = "GamerHub Private: Pet Simulator X",
+        HidePremium = true,
+        Save = true,
+        ConfigFolder = "gamerhubpetsimx",
+    })
+    local LocalPlayer = Window:MakeTab({
+        Name = "LocalPlayer",
+        PremiumOnly = false,
+    })
+    local Autofarm = Window:MakeTab({
+        Name = "Autofarm",
+        PremiumOnly = false,
+    })
+    lpsec = LocalPlayer:AddSection({
+        Name = "LocalPlayer",
+    })
+    afsec = Autofarm:AddSection({
+        Name = "Autofarm",
+    })
 end
