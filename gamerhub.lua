@@ -944,9 +944,14 @@ elseif game.PlaceId == 142823291 then
         Callback = function(v)
             getgenv().esp = v
             function getTeam(plr)
+                local char = plr.Character or plr.CharacterAdded:Wait()
                 if plr.Backpack:FindFirstChild("Knife") then
                     return "murderer"
+                elseif char:FindFirstChild("Knife") then
+                    return "murderer"
                 elseif plr.Backpack:FindFirstChild("Gun") then
+                    return "sheriff"
+                elseif char:FindFirstChild("Gun") then
                     return "sheriff"
                 end
             end
@@ -1001,30 +1006,65 @@ elseif game.PlaceId == 142823291 then
                 if v ~= game.Players.LocalPlayer then
                     repeat
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+                        game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Knife"))
                         mouseclick()
                     until v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("Humanoid")
                 end
             end
         end
     })
+    lpsec:AddButton({
+        Name = "Fly",
+        Callback = function()
+            loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
+        end
+    })
     teamsec:AddToggle({
-        Name = "Silent Aim",
+        Name = "Team Notifier",
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().silentaim = v
-            local function closest()
-                local distance = math.huge
-                local target = nil
+            getgenv().teamnotifier = v
+            function getTeam(plr)
+                local char = plr.Character or plr.CharacterAdded:Wait()
+                if plr.Backpack:FindFirstChild("Knife") then
+                    return "murderer"
+                elseif char:FindFirstChild("Knife") then
+                    return "murderer"
+                elseif plr.Backpack:FindFirstChild("Gun") then
+                    return "sheriff"
+                elseif char:FindFirstChild("Gun") then
+                    return "sheriff"
+                end
+            end
+            local mt = getrawmetatable(game)
+            setreadonly(mt, false)
+            local namecall = mt.__namecall
 
-                for i,v in pairs(game.Players:GetPlayers()) do
-                    if v ~= game.Players.LocalPlayer and v.Character and getgenv().silentaim and v.TeamColor ~= game.Players.LocalPlayer.TeamColor then
-                        local sp = workspace.CurrentCamera:WorldToScreenPoint(v.Character.Head.Position)
-                    end 
+            mt.__namecall = newcclosure(function(self, ...)
+                local method = getnamecallmethod()
+                local args = {...}
+
+                if tostring(method) == "InvokeServer" and tostring(self) == "GetChance" and getgenv().teamnotifier then
+                    for i,v in pairs(game.Players:GetPlayers()) do
+                        if getTeam(v) == "murderer" then
+                            OrionLib:MakeNotification({
+                                Name = "Murderer",
+                                Content = v.Name.." is the murderer!",
+                                Duration = 5,
+                            })
+                        elseif getTeam(v) == "sheriff" then
+                            OrionLib:MakeNotification({
+                                Name = "Sheriff",
+                                Content = v.Name.." is the sheriff!",
+                                Duration = 5,
+                            })
+                        end
+                    end
                 end
 
-                return target
-            end
+                return namecall(self, table.unpack(args))
+            end)
         end
     })
 elseif game.PlaceId == 6284583030 then
