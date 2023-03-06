@@ -1037,6 +1037,27 @@ elseif game.PlaceId == 142823291 then
                     return "sheriff"
                 end
             end
+            local murdererfound = false
+            local sherifffound = false
+            game.RunService.RenderStepped:Connect(function()
+                for i,v in pairs(game.Players:GetPlayers()) do
+                    if getTeam(v) == "murderer" and not mudererfound and getgenv().teamnotifier then
+                        OrionLib:MakeNotification({
+                            Name = "Murderer",
+                            Content = v.Name.." is the murderer!",
+                            Duration = 5,
+                        })
+                        murdererfound = true
+                    elseif getTeam(v) == "sheriff" and getgenv().teamnotifier and not sherifffound then
+                        OrionLib:MakeNotification({
+                            Name = "Sheriff",
+                            Content = v.Name.." is the sheriff!",
+                            Duration = 5,
+                        })
+                        sherifffound = true
+                    end
+                end
+            end)
             local mt = getrawmetatable(game)
             setreadonly(mt, false)
             local namecall = mt.__namecall
@@ -1046,21 +1067,8 @@ elseif game.PlaceId == 142823291 then
                 local args = {...}
 
                 if tostring(method) == "InvokeServer" and tostring(self) == "GetChance" and getgenv().teamnotifier then
-                    for i,v in pairs(game.Players:GetPlayers()) do
-                        if getTeam(v) == "murderer" then
-                            OrionLib:MakeNotification({
-                                Name = "Murderer",
-                                Content = v.Name.." is the murderer!",
-                                Duration = 5,
-                            })
-                        elseif getTeam(v) == "sheriff" then
-                            OrionLib:MakeNotification({
-                                Name = "Sheriff",
-                                Content = v.Name.." is the sheriff!",
-                                Duration = 5,
-                            })
-                        end
-                    end
+                    murdererfound = false
+                    sherifffound = false
                 end
 
                 return namecall(self, table.unpack(args))
