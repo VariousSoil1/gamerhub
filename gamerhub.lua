@@ -1007,7 +1007,6 @@ elseif game.PlaceId == 142823291 then
                     repeat
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
                         game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:FindFirstChild("Knife"))
-                        mouseclick()
                     until v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("Humanoid")
                 end
             end
@@ -1074,26 +1073,5 @@ elseif game.PlaceId == 142823291 then
                 return namecall(self, table.unpack(args))
             end)
         end
-    })
-elseif game.PlaceId == 6284583030 then
-    Window = OrionLib:MakeWindow({
-        Name = "GamerHub Private: Pet Simulator X",
-        HidePremium = true,
-        Save = true,
-        ConfigFolder = "gamerhubpetsimx",
-    })
-    local LocalPlayer = Window:MakeTab({
-        Name = "LocalPlayer",
-        PremiumOnly = false,
-    })
-    local Autofarm = Window:MakeTab({
-        Name = "Autofarm",
-        PremiumOnly = false,
-    })
-    lpsec = LocalPlayer:AddSection({
-        Name = "LocalPlayer",
-    })
-    afsec = Autofarm:AddSection({
-        Name = "Autofarm",
     })
 end
