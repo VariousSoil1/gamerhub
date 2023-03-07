@@ -1012,7 +1012,8 @@ elseif game.PlaceId == 142823291 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().esp = v
+            getgenv().settings.esp = v
+            savesettings()
             function getTeam(plr)
                 local char = plr.Character or plr.CharacterAdded:Wait()
                 if plr.Backpack:FindFirstChild("Knife") then
@@ -1094,6 +1095,7 @@ elseif game.PlaceId == 142823291 then
         Save = true,
         Callback = function(v)
             getgenv().settings.teamnotifier = v
+            savesettings()
             function getTeam(plr)
                 local char = plr.Character or plr.CharacterAdded:Wait()
                 if plr.Backpack:FindFirstChild("Knife") then
@@ -1144,4 +1146,6 @@ elseif game.PlaceId == 142823291 then
             end)
         end
     })
+    OrionLib:Init()
+    loadsettings()
 end
