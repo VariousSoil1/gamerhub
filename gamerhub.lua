@@ -17,17 +17,17 @@ function checkGame()
                 autobuybelts = false,
                 autobuyranks = false,
             }
-        elseif currentgame == "Kohl's admin" then
-            getgenv().settings = {
-                anticrash = false,
-                permanentadmin = false,
-            }
-        elseif currentgame == "MM2" then
-            getgenv().settings = {
-                esp = false,
-                teamnotifier = false,
-            }
         end
+    elseif currentgame == "Kohl's admin" then
+        getgenv().settings = {
+            anticrash = false,
+            permanentadmin = false,
+        }
+    elseif currentgame == "MM2" then
+        getgenv().settings = {
+            esp = false,
+            teamnotifier = false,
+        }
     end
 end
 
