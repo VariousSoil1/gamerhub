@@ -4,24 +4,26 @@ local currentgame
 
 getgenv().settings = nil
 
-if currentgame == "Ninja Legends" then
-    getgenv().settings = {
-        autoswing = false,
-        autosell = false,
-        autobuyswords = false,
-        autobuybelts = false,
-        autobuyranks = false,
-    }
-elseif currentgame == "Kohl's admin" then
-    getgenv().settings = {
-        anticrash = false,
-        permanentadmin = false,
-    }
-elseif currentgame == "MM2" then
-    getgenv().settings = {
-        esp = false,
-        teamnotifier = false,
-    }
+function checkGame()
+    if currentgame == "Ninja Legends" then
+        getgenv().settings = {
+            autoswing = false,
+            autosell = false,
+            autobuyswords = false,
+            autobuybelts = false,
+            autobuyranks = false,
+        }
+    elseif currentgame == "Kohl's admin" then
+        getgenv().settings = {
+            anticrash = false,
+            permanentadmin = false,
+        }
+    elseif currentgame == "MM2" then
+        getgenv().settings = {
+            esp = false,
+            teamnotifier = false,
+        }
+    end
 end
 
 function loadsettings()
@@ -168,6 +170,7 @@ if game.PlaceId == 155615604 then
     OrionLib:Init()
 elseif game.PlaceId == 3956818381 then
     currentgame = "Ninja Legends"
+    checkGame()
     loadsettings()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Ninja Legends",
@@ -761,6 +764,7 @@ elseif game.PlaceId == 2214661900 then
     OrionLib:Init()
 elseif game.PlaceId == 112420803 then
     currentgame = "Kohl's admin"
+    checkGame()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Kohl's Admin",
         HidePremium = true,
@@ -967,6 +971,7 @@ elseif game.PlaceId == 112420803 then
     OrionLib:Init()
 elseif game.PlaceId == 142823291 then
     currentgame = "MM2"
+    checkGame()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Murder Mystery 2",
         HidePremium = false,
