@@ -6,7 +6,7 @@ getgenv().settings = nil
 
 function checkGame()
     if currentgame == "Ninja Legends" then
-        if loadsettings() == "hasgame" then
+        if loadsettings() == "hassave" then
             savedsettings = loadsettings()
             getgenv().settings = savedsettings
         else
