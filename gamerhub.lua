@@ -1143,8 +1143,11 @@ else
                     loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
                     flyflag = false
                 elseif not getgenv().flying and not flyflag then
+                    local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                     game.Players.LocalPlayer.Character.Humanoid.Health = 0
-                    task.wait(game.Players.RespawnTime)
+                    game.Players.LocalPlayer.CharacterAdded:Connect(function()
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
+                    end)
                     flyflag = true
                 end
             end)
