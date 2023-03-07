@@ -896,11 +896,15 @@ elseif game.PlaceId == 112420803 then
         end
     })
     Admin:AddTextbox({
-        Name = "Padban (full username)",
+        Name = "Padban",
         Default = "",
         TextDisappear = false,
         Callback = function(v)
-            print(v)
+            for i = 1,100 do
+                game.Players:Chat("dog "..v)
+            end
+            wait(3)
+            game.Players:Chat("kill "..v)
         end
     })
     OrionLib:Init()
