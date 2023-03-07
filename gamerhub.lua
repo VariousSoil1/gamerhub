@@ -1145,7 +1145,7 @@ else
                 elseif not getgenv().flying and not flyflag then
                     local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                     game.Players.LocalPlayer.Character.Humanoid.Health = 0
-                    wait(7)
+                    wait(10)
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
                     flyflag = true
                 end
