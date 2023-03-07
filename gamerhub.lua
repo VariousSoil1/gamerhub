@@ -1138,10 +1138,12 @@ else
         Callback = function(v)
             getgenv().flying = v
             local flyflag = true
+            local stopflyflag = false
             game.RunService.RenderStepped:Connect(function()
-                if getgenv().flying and flyflag then
+                if getgenv().flying and flyflag and not stopflyflag then
                     loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
                     flyflag = false
+                    stopflyflag = true
                 elseif not getgenv().flying and not flyflag then
                     local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                     game.Players.LocalPlayer.Character.Humanoid.Health = 0
@@ -1149,6 +1151,7 @@ else
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
                     end)
                     flyflag = true
+                    stopflyflag = false
                 end
             end)
         end
