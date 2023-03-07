@@ -895,7 +895,7 @@ elseif game.PlaceId == 112420803 then
             end
         end
     })
-    adsec:AddTextbox({
+    Admin:AddTextbox({
         Name = "Padban (full username)",
         Default = "",
         TextDisappear = false,
