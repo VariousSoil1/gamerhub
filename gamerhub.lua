@@ -1,6 +1,26 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window
 
+getgenv().settings = nil -- starting value
+
+function loadsettings(game)
+    print("loading settings")
+    local HS = game:GetService("HttpService")
+    if (readfile and isfile and isfile("gamerhub"..game.."/"..game.PlaceId)) then
+        _G.settingstable = HttpService:JSONDecode(readfile("gamerhub"..game.."/"..game.PlaceId))
+    end
+end
+
+function savesettings(game)
+    print("saving settings..")
+    local json
+    local HS = game:GetService("HttpService")
+    if (writefile) then
+        json = HS:JSONEncode(getgenv().settings)
+        writefile("gamerhub"..game.."/"..game.PlaceId, json)
+    end
+end
+
 if game.PlaceId == 155615604 then
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Prison Life",
@@ -174,9 +194,10 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().autoswing = v
+            getgenv().settings.autoswing = v
+            savesettings("ninjalegends")
             while true do
-                if not getgenv().autoswing then return end
+                if not getgenv().settings.autoswing == true then return end
                 task.wait()
                 local sword;
                 
@@ -1087,5 +1108,12 @@ elseif game.PlaceId == 142823291 then
                 return namecall(self, table.unpack(args))
             end)
         end
+    })
+elseif game.PlaceId == 3101667897 then
+    Window = OrionLib:MakeWindow({
+        Name = "GamerHub Private",
+        HidePremium = true,
+        SaveConfig = true,
+        ConfigFolder = "gamerhublegendsofspeed"
     })
 end
