@@ -1103,6 +1103,7 @@ else
         Name = "GamerHub: Standard",
         HidePremium = true,
     })
+    print(Window)
     local LocalPlayer = Window:MakeTab({
         Name = "LocalPlayer",
         PremiumOnly = false,
