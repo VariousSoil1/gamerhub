@@ -905,6 +905,8 @@ elseif game.PlaceId == 112420803 then
             end
             wait(3)
             game.Players:Chat("kill "..v)
+            task.wait()
+            fireclickdetector(workspace.Terrain._Game.Admin.Regen.ClickDetector)
         end
     })
     OrionLib:Init()
