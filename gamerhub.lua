@@ -1099,7 +1099,6 @@ else
         Content = "Game not supported, loading standard version...",
         Duration = 5,
     })
-    task.wait(1)
     Window = OrionLib:MakeWindow({
         Name = "GamerHub: Standard",
         HidePremium = true,
