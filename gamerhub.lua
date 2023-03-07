@@ -1149,3 +1149,8 @@ elseif game.PlaceId == 142823291 then
     OrionLib:Init()
     loadsettings()
 end
+
+OrionLib:MakeNotification({
+    Name = "Loaded",
+    Content = "Script successfully loaded",
+})
