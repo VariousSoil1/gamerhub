@@ -198,7 +198,6 @@ elseif game.PlaceId == 3956818381 then
         Save = true,
         Callback = function(v)
             getgenv().autosell = v
-            savesettings()
             while true do
                 if not getgenv().autosell then return end
                 workspace.sellAreaCircles.sellAreaCircle16.circleInner.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
