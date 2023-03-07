@@ -4,6 +4,14 @@ local currentgame
 
 getgenv().settings = nil
 
+function loadsettings()
+    local hs = game:GetService("HttpService")
+    if (readfile and isfile and isfile(currentgame..".txt")) then
+        getgenv().settings = hs:JSONDecode(readfile(currentgame..".txt"))
+        return "hassave"
+    end
+end
+
 function checkGame()
     if currentgame == "Ninja Legends" then
         if loadsettings() == "hassave" then
@@ -28,14 +36,6 @@ function checkGame()
             esp = false,
             teamnotifier = false,
         }
-    end
-end
-
-function loadsettings()
-    local hs = game:GetService("HttpService")
-    if (readfile and isfile and isfile(currentgame..".txt")) then
-        getgenv().settings = hs:JSONDecode(readfile(currentgame..".txt"))
-        return "hassave"
     end
 end
 
