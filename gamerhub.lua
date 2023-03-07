@@ -1,57 +1,5 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window
-local currentgame
-
-getgenv().settings = nil
-
-function loadsettings()
-    local hs = game:GetService("HttpService")
-    if (readfile and isfile and isfile(currentgame..".txt")) then
-        getgenv().settings = hs:JSONDecode(readfile(currentgame..".txt"))
-        return "hassave"
-    end
-end
-
-function checkGame()
-    if currentgame == "Ninja Legends" then
-        if loadsettings() == "hassave" then
-            savedsettings = loadsettings()
-            getgenv().settings = savedsettings
-        else
-            getgenv().settings = {
-                autoswing = false,
-                autosell = false,
-                autobuyswords = false,
-                autobuybelts = false,
-                autobuyranks = false,
-            }
-        end
-    elseif currentgame == "Kohl's admin" then
-        getgenv().settings = {
-            anticrash = false,
-            permanentadmin = false,
-        }
-    elseif currentgame == "MM2" then
-        getgenv().settings = {
-            esp = false,
-            teamnotifier = false,
-        }
-    end
-end
-
-function savesettings()
-    local json
-    local hs = game:GetService("HttpService")
-    if (writefile) then
-        json = hs:JSONEncode(getgenv().settings)
-        writefile(currentgame..".txt", json)
-    else
-        OrionLib:MakeNotification({
-            Name = "your executor",
-            Content = "bro get better executor",
-        })
-    end
-end
 
 if game.PlaceId == 155615604 then
     currentgame = "Prison Life"
@@ -175,9 +123,7 @@ if game.PlaceId == 155615604 then
     })
     OrionLib:Init()
 elseif game.PlaceId == 3956818381 then
-    currentgame = "Ninja Legends"
-    checkGame()
-    loadsettings()
+    OrionLib:Init()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Ninja Legends",
         HidePremium = false,
@@ -230,13 +176,7 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            if getgenv().settings.autoswing then
-                v = true
-            else
-                v = false
-            end
-            getgenv().settings.autoswing = v
-            savesettings()
+            getgenv().autoswing = v
             while true do
                 if not getgenv().autoswing then return end
                 task.wait()
@@ -257,15 +197,10 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            if getgenv().settings.autosell then
-                v = true
-            else
-                v = false
-            end
-            getgenv().settings.autosell = v
+            getgenv().autosell = v
             savesettings()
             while true do
-                if not getgenv().settings.autosell then return end
+                if not getgenv().autosell then return end
                 workspace.sellAreaCircles.sellAreaCircle16.circleInner.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                 task.wait()
                 workspace.sellAreaCircles.sellAreaCircle16.circleInner.CFrame = CFrame.new(0, 0, 0)
@@ -278,10 +213,9 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().settings.autobuyswords = v
-            savesettings()
+            getgenv().autobuyswords = v
             while true do
-                if not getgenv().settings.autobuyswords then return end
+                if not getgenv().autobuyswords then return end
                 task.wait()
                 game.Players.LocalPlayer.ninjaEvent:FireServer("buyAllSwords", "Inner Peace Island")
             end
@@ -292,10 +226,9 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().settings.autobuybelts = v
-            savesettings()
+            getgenv().autobuybelts = v
             while true do
-                if not getgenv().settings.autobuybelts then return end
+                if not getgenv().autobuybelts then return end
                 task.wait()
                 game.Players.LocalPlayer.ninjaEvent:FireServer("buyAllBelts", "Inner Peace Island")
             end
@@ -306,8 +239,7 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().settings.autobuyranks = v
-            savesettings()
+            getgenv().autobuyranks = v
             local function getRank()
                 return game.Players.LocalPlayer.leaderstats.Rank.Value
             end
@@ -587,10 +519,8 @@ elseif game.PlaceId == 3956818381 then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldcframe
         end
     })
-    OrionLib:Init()
-    loadsettings()
 elseif game.PlaceId == 2214661900 then
-    currentgame = "Area 51"
+    OrionLib:Init()
     Library = OrionLib:MakeWindow({
         Name = "GamerHub Private: Survive in Area 51",
         HidePremium = false,
@@ -778,10 +708,7 @@ elseif game.PlaceId == 2214661900 then
             end
         end
     })
-    OrionLib:Init()
 elseif game.PlaceId == 112420803 then
-    currentgame = "Kohl's admin"
-    checkGame()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Kohl's Admin",
         HidePremium = true,
@@ -987,8 +914,7 @@ elseif game.PlaceId == 112420803 then
     })
     OrionLib:Init()
 elseif game.PlaceId == 142823291 then
-    currentgame = "MM2"
-    checkGame()
+    OrionLib:Init()
     Window = OrionLib:MakeWindow({
         Name = "GamerHub Private: Murder Mystery 2",
         HidePremium = false,
@@ -1168,8 +1094,6 @@ elseif game.PlaceId == 142823291 then
             end)
         end
     })
-    OrionLib:Init()
-    loadsettings()
 end
 
 OrionLib:MakeNotification({
