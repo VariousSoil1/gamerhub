@@ -1104,11 +1104,11 @@ else
         Name = "GamerHub: Standard",
         HidePremium = true,
     })
-    local LocalPlayer = OrionLib:MakeTab({
+    local LocalPlayer = Window:MakeTab({
         Name = "LocalPlayer",
         PremiumOnly = false,
     })
-    local Scripts = OrionLib:MakeTab({
+    local Scripts = Window:MakeTab({
         Name = "Scripts",
         PremiumOnly = false,
     })
