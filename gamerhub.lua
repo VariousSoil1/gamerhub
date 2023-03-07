@@ -1139,10 +1139,12 @@ else
             getgenv().flying = v
             local flyflag = true
             local killed = false
+            local teleported = false
             game.RunService.RenderStepped:Connect(function()
                 if getgenv().flying and flyflag and not stopflyflag then
                     loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
                     killed = false
+                    teleported = false
                     flyflag = false
                 elseif not getgenv().flying and not flyflag then
                     local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -1151,7 +1153,10 @@ else
                         killed = false
                     end
                     wait(10)
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
+                    if not teleported then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
+                        teleported = true
+                    end
                     flyflag = true
                 end
             end)
