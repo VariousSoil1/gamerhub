@@ -895,6 +895,14 @@ elseif game.PlaceId == 112420803 then
             end
         end
     })
+    adsec:AddTextbox({
+        Name = "Padban (full username)",
+        Default = "",
+        TextDisappear = false,
+        Callback = function(v)
+            print(v)
+        end
+    })
     OrionLib:Init()
 elseif game.PlaceId == 142823291 then
     Window = OrionLib:MakeWindow({
