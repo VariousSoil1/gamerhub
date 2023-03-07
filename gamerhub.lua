@@ -1093,6 +1093,67 @@ elseif game.PlaceId == 142823291 then
             end)
         end
     })
+else
+    OrionLib:MakeNotification({
+        Name = "Game",
+        Content = "Game not supported, loading standard version...",
+        Duration = 5,
+    })
+    task.wait(1)
+    Window = OrionLib:MakeWindow({
+        Name = "GamerHub: Standard",
+        HidePremium = true,
+    })
+    local LocalPlayer = OrionLib:MakeTab({
+        Name = "LocalPlayer",
+        PremiumOnly = false,
+    })
+    local Scripts = OrionLib:MakeTab({
+        Name = "Scripts",
+        PremiumOnly = false,
+    })
+    local lpsec = LocalPlayer:AddSection({
+        Name = "LocalPlayer",
+    })
+    local ssec = Scripts:AddSection({
+        Name = "Scripts",
+    })
+    lpsec:AddSlider({
+        Name = "Walkspeed",
+        Min = 16,
+        Max = 250,
+        Default = 16,
+        Increment = 1,
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+        end
+    })
+    lpsec:AddSlider({
+        Name = "Jump power",
+        Min = 50,
+        Max = 450,
+        Default = 50,
+        Incrememt = 1,
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+        end
+    })
+    lpsec:AddToggle({
+        Name = "Fly",
+        Default = false,
+        Callback = function(v)
+            getgenv().flying = v
+            local flyflag = true
+            game.RunService.RenderStepped:Connect(function()
+                if getgenv().flying and flyflag then
+                    loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
+                    flyflag = false
+                elseif not getgenv().flying and not flyflag then
+                    flyflag = true
+                end
+            end)
+        end
+    })
 end
 
 OrionLib:MakeNotification({
