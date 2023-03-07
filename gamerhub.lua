@@ -224,7 +224,13 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().autoswing = v
+            if getgenv().settings.autoswing then
+                v = true
+            else
+                v = false
+            end
+            getgenv().settings.autoswing = v
+            savesettings()
             while true do
                 if not getgenv().autoswing then return end
                 task.wait()
@@ -245,6 +251,11 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
+            if getgenv().settings.autosell then
+                v = true
+            else
+                v = false
+            end
             getgenv().settings.autosell = v
             savesettings()
             while true do
