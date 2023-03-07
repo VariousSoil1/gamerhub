@@ -1094,11 +1094,6 @@ elseif game.PlaceId == 142823291 then
         end
     })
 else
-    OrionLib:MakeNotification({
-        Name = "Game",
-        Content = "Game not supported, loading standard version...",
-        Duration = 5,
-    })
     Window = OrionLib:MakeWindow({
         Name = "GamerHub: Standard",
         HidePremium = true,
