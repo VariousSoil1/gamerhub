@@ -6,23 +6,28 @@ getgenv().settings = nil
 
 function checkGame()
     if currentgame == "Ninja Legends" then
-        getgenv().settings = {
-            autoswing = false,
-            autosell = false,
-            autobuyswords = false,
-            autobuybelts = false,
-            autobuyranks = false,
-        }
-    elseif currentgame == "Kohl's admin" then
-        getgenv().settings = {
-            anticrash = false,
-            permanentadmin = false,
-        }
-    elseif currentgame == "MM2" then
-        getgenv().settings = {
-            esp = false,
-            teamnotifier = false,
-        }
+        if loadsettings() == "hasgame" then
+            savedsettings = loadsettings()
+            getgenv().settings = savedsettings
+        else
+            getgenv().settings = {
+                autoswing = false,
+                autosell = false,
+                autobuyswords = false,
+                autobuybelts = false,
+                autobuyranks = false,
+            }
+        elseif currentgame == "Kohl's admin" then
+            getgenv().settings = {
+                anticrash = false,
+                permanentadmin = false,
+            }
+        elseif currentgame == "MM2" then
+            getgenv().settings = {
+                esp = false,
+                teamnotifier = false,
+            }
+        end
     end
 end
 
@@ -30,6 +35,7 @@ function loadsettings()
     local hs = game:GetService("HttpService")
     if (readfile and isfile and isfile(currentgame..".txt")) then
         getgenv().settings = hs:JSONDecode(readfile(currentgame..".txt"))
+        return "hassave"
     end
 end
 
