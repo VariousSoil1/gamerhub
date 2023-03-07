@@ -1099,11 +1099,10 @@ else
         Content = "Game not supported, loading standard version...",
         Duration = 5,
     })
-    Window = OrionLib:MakeWindow({
+    local Window = OrionLib:MakeWindow({
         Name = "GamerHub: Standard",
         HidePremium = true,
     })
-    print(Window)
     local LocalPlayer = Window:MakeTab({
         Name = "LocalPlayer",
         PremiumOnly = false,
