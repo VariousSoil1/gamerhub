@@ -1143,19 +1143,8 @@ else
                     loadstring(game:HttpGet(('https://pastebin.com/raw/WxmvCLLH'),true))()
                     flyflag = false
                 elseif not getgenv().flying and not flyflag then
-                    local character = game.Players.LocalPlayer.Character
-                    local oldpos = character.HumanoidRootPart.CFrame
-                    if character:FindFirstChild("Humanoid") then
-                        character["Humanoid"]:ChangeState(15)
-                    end
-                    character:ClearAllChildren()
-                    local newcharacter = Instance.new("Model", workspace)
-                    game.Players.LocalPlayer.Character = newcharacter
-                    wait()
-                    game.Players.LocalPlayer.Character = character
-                    newcharacter:Destroy()
-                    wait()
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos
+                    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                    task.wait(game.Players.RespawnTime)
                     flyflag = true
                 end
             end)
