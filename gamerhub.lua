@@ -12,6 +12,16 @@ if currentgame == "Ninja Legends" then
         autobuybelts = false,
         autobuyranks = false,
     }
+elseif currentgame == "Kohl's admin" then
+    getgenv().settings = {
+        anticrash = false,
+        permanentadmin = false,
+    }
+elseif currentgame == "MM2" then
+    getgenv().settings = {
+        esp = false,
+        teamnotifier = false,
+    }
 end
 
 function loadsettings()
@@ -263,6 +273,7 @@ elseif game.PlaceId == 3956818381 then
         Save = true,
         Callback = function(v)
             getgenv().settings.autobuybelts = v
+            savesettings()
             while true do
                 if not getgenv().settings.autobuybelts then return end
                 task.wait()
@@ -275,7 +286,8 @@ elseif game.PlaceId == 3956818381 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().autobuyranks = v
+            getgenv().settings.autobuyranks = v
+            savesettings()
             local function getRank()
                 return game.Players.LocalPlayer.leaderstats.Rank.Value
             end
@@ -556,6 +568,7 @@ elseif game.PlaceId == 3956818381 then
         end
     })
     OrionLib:Init()
+    loadsettings()
 elseif game.PlaceId == 2214661900 then
     currentgame = "Area 51"
     Library = OrionLib:MakeWindow({
@@ -833,11 +846,11 @@ elseif game.PlaceId == 112420803 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().permanentadmin = v
+            getgenv().settings.permanentadmin = v
             local hasadmin = false
             local check = {}
             while true do
-                if not getgenv().permanentadmin then return end
+                if not getgenv().settings.permanentadmin then return end
                 task.wait()
                 local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                 for i,v in pairs(workspace.Terrain._Game.Admin.Pads:GetChildren()) do
@@ -913,10 +926,10 @@ elseif game.PlaceId == 112420803 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().anticrash = v
+            getgenv().settings.anticrash = v
             game:GetService("RunService").RenderStepped:Connect(function()
                 for _, Player in pairs(game.Players:GetChildren()) do
-                    if Player.Backpack:FindFirstChild("VampireVanquisher") or Player.Character:FindFirstChild("VampireVanquisher") and getgenv().anticrash then
+                    if Player.Backpack:FindFirstChild("VampireVanquisher") or Player.Character:FindFirstChild("VampireVanquisher") and getgenv().settings.anticrash then
                         game.Players:Chat("removegear ".. Player.Name)
                         game.Players:Chat("refresh ".. Player.Name)
                     end
@@ -1080,7 +1093,7 @@ elseif game.PlaceId == 142823291 then
         Default = false,
         Save = true,
         Callback = function(v)
-            getgenv().teamnotifier = v
+            getgenv().settings.teamnotifier = v
             function getTeam(plr)
                 local char = plr.Character or plr.CharacterAdded:Wait()
                 if plr.Backpack:FindFirstChild("Knife") then
@@ -1097,14 +1110,14 @@ elseif game.PlaceId == 142823291 then
             local sherifffound = false
             game.RunService.RenderStepped:Connect(function()
                 for i,v in pairs(game.Players:GetPlayers()) do
-                    if getTeam(v) == "murderer" and not mudererfound and getgenv().teamnotifier then
+                    if getTeam(v) == "murderer" and not mudererfound and getgenv().settings.teamnotifier then
                         OrionLib:MakeNotification({
                             Name = "Murderer",
                             Content = v.Name.." is the murderer!",
                             Duration = 5,
                         })
                         murdererfound = true
-                    elseif getTeam(v) == "sheriff" and getgenv().teamnotifier and not sherifffound then
+                    elseif getTeam(v) == "sheriff" and getgenv().settings.teamnotifier and not sherifffound then
                         OrionLib:MakeNotification({
                             Name = "Sheriff",
                             Content = v.Name.." is the sheriff!",
