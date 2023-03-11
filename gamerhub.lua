@@ -583,6 +583,21 @@ elseif game.PlaceId == 112420803 then
             end
         end)
     end)
+    lpsec:Toggle("Invincible to Obby", false, function(v)
+        getgenv().invincibletoobby = v
+        while true do
+            if not getgenv().invincibletoobby then
+                for i,v in pairs(workspace.Terrain._Game.Workspace.Obby:GetChildren()) do
+                    v.CanTouch = true
+                end
+                return
+            end
+            task.wait()
+            for i,v in pairs(workspace.Terrain._Game.Workspace.Obby:GetChildren()) do
+                v.CanTouch = false
+            end
+        end
+    end)
 elseif game.PlaceId == 142823291 then
     win = DiscordLib:Window("GamerHub Lite: Murder Mystery 2")
     local LocalPlayer = win:Server("LocalPlayer", "")
@@ -741,7 +756,7 @@ elseif game.PlaceId == 6839171747 then
         while true do
             if not getgenv().monsternotifier then return end
             task.wait()
-            if workspace:FindFirstChild("RushMoving") and not rushspawned and workspace:FindFirstChild("RushMoving").Main.Position > -4 then
+            if workspace:FindFirstChild("RushMoving") and not rushspawned and workspace:FindFirstChild("RushMoving").RushNew.Position.Y > -20 then
                 OrionLib:MakeNotification({
                     Name = "Notifier",
                     Content = "Rush has spawned, go hide. ",
@@ -750,8 +765,9 @@ elseif game.PlaceId == 6839171747 then
                 repeat task.wait()
                     rushspawned = true
                 until not workspace:FindFirstChild("RushMoving")
+                rushspawned = false
             end
-            if workspace:FindFirstChild("AmbushMoving") and not ambushspawned and workspace:FindFirstChild("RushMoving").Main.Position > -4 then
+            if workspace:FindFirstChild("AmbushMoving") and not ambushspawned and workspace:FindFirstChild("AmbushMoving").RushNew.Position.Y > -20 then
                 OrionLib:MakeNotification({
                     Name = "Notifier",
                     Content = "Ambush has spawned, go hide. ",
@@ -760,8 +776,9 @@ elseif game.PlaceId == 6839171747 then
                 repeat task.wait()
                     ambushspawned = true
                 until not workspace:FindFirstChild("AmbushMoving")
+                ambushspawned = false
             end
-            if workspace:FindFirstChild("SeekMoving") and not seekspawned and workspace:FindFirstChild("RushMoving").Main.Position > -4 then
+            if workspace:FindFirstChild("SeekMoving") and not seekspawned then
                 OrionLib:MakeNotification({
                     Name = "Notifier",
                     Content = "Seek has spawned, get ready to run. ",
@@ -770,6 +787,130 @@ elseif game.PlaceId == 6839171747 then
                 repeat task.wait()
                     seekspawned = true
                 until not workspace:FindFirstChild("SeekMoving")
+                seekspawned = false
+            end
+        end
+    end)
+    usec:Toggle("Key ESP", false, function(v)
+        getgenv().keyesp = v
+        local LatestRoom = game.ReplicatedStorage.GameData:FindFirstChild("LatestRoom")
+        while true do
+            if not getgenv().keyesp then
+                for i,v in pairs(workspace.CurrentRooms[LatestRoom.Value]:GetDescendants()) do
+                    if v:IsA("Highlight") then
+                        v:Destroy()
+                    end
+                end
+                return
+            end
+            task.wait()
+            for i,v in pairs(workspace.CurrentRooms[LatestRoom.Value]:GetDescendants()) do
+                if v.Name == "Key" then
+                    local esp = Instance.new("Highlight", v)
+                    esp.FillColor = Color3.new(255, 0, 0)
+                    esp.FillTransparency = 0
+                    esp.OutlineColor = Color3.new(0, 0, 0)
+                    esp.OutlineTransparency = 0
+                end
+            end
+        end
+    end)
+    usec:Toggle("Get Room Number", false, function(v)
+        getgenv().getroomnumber = v
+        local LatestRoom = game.ReplicatedStorage.GameData:FindFirstChild("LatestRoom")
+        LatestRoom.Changed:Connect(function()
+            if getgenv().getroomnumber == true then
+                OrionLib:MakeNotification({
+                    Name = "LatestRoom.Changed",
+                    Content = "New room number: "..LatestRoom.Value,
+                    Duration = 5,
+                })
+            end
+        end)
+    end)
+    lpsec:Button("Fullbright", function()
+        pcall(function()
+            local lighting = game:GetService("Lighting");
+            lighting.Ambient = Color3.fromRGB(255, 255, 255);
+            lighting.Brightness = 1;
+            lighting.FogEnd = 1e10;
+            for i, v in pairs(lighting:GetDescendants()) do
+                if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("SunRaysEffect") then
+                    v.Enabled = false;
+                end;
+            end;
+            lighting.Changed:Connect(function()
+                lighting.Ambient = Color3.fromRGB(255, 255, 255);
+                lighting.Brightness = 1;
+                lighting.FogEnd = 1e10;
+            end);
+            spawn(function()
+                local character = game:GetService("Players").LocalPlayer.Character;
+                while wait() do
+                    repeat wait() until character ~= nil;
+                    if not character.HumanoidRootPart:FindFirstChildWhichIsA("PointLight") then
+                        local headlight = Instance.new("PointLight", character.HumanoidRootPart);
+                        headlight.Brightness = 1;
+                        headlight.Range = 60;
+                    end;
+                end;
+            end);
+        end)
+    end)
+    usec:Toggle("Instant Proximity Prompt", false, function(v)
+        getgenv().instantpp = v
+        game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(p)
+            if getgenv().instantpp then
+                if (fireproximityprompt) then
+                    fireproximityprompt(p)
+                else
+                    DiscordLib:Notification("your executor", "bro get better executor", "Okay!")
+                end
+            end
+        end)
+    end)
+    lpsec:Toggle("Noclip (recommended use at door 50 to go past the door)", false, function(v)
+        getgenv().noclip = v
+        while true do
+            if not getgenv().noclip then
+                for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = true
+                    end
+                end
+                return
+            end
+            task.wait()
+            for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.CanCollide = false
+                end
+            end
+        end
+    end)
+    usec:Toggle("Monster ESP", false, function(v)
+        getgenv().monsteresp = v
+        while true do
+            if not getgenv().monsteresp then return end
+            task.wait()
+            if workspace:FindFirstChild("RushMoving") then
+                local esp = Instance.new("Highlight", workspace["RushMoving"])
+                esp.FillColor = Color3.new(0, 0, 0)
+                esp.FillTransparency = 0
+                esp.OutlineColor = Color3.new(255, 255, 255)
+                esp.OutlineTransparency = 0
+            elseif workspace:FindFirstChild("AmbushMoving") then
+                local esp = Instance.new("Highlight", workspace["AmbushMoving"])
+                esp.FillColor = Color3.new(0, 0, 0)
+                esp.FillTransparency = 0
+                esp.OutlineColor = Color3.new(0, 255, 0)
+                esp.OutlineTransparency = 0
+            elseif workspace:FindFirstChild("SeekMoving") then
+                local esp = Instance.new("Highlight", workspace["SeekMoving"])
+                esp.FillColor = Color3.new(0, 0, 0)
+                esp.FillTransparency = 0
+                esp.OutlineColor = Color3.new(255, 255, 255)
+                esp.OutlineTransparency = 0
             end
         end
     end)
